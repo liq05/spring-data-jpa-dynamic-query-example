@@ -2,6 +2,7 @@ package mytest;
 
 import com.alibaba.fastjson.JSONArray;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import lombok.extern.java.Log;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest
+@Log
 public class test {
     @Autowired
     private UserRepository repo;
@@ -55,13 +57,18 @@ public class test {
     @Test
     public void t() throws ParseException {
         List<User> users = repo.findAll();
-        System.out.println("-----" + JSONArray.toJSONString(users));
+        log.warning("-----" + JSONArray.toJSONString(users));
 
         QUser user = QUser.user;
         BooleanExpression lastName = user.lastName.eq("King");
-        System.out.println("-----" + JSONArray.toJSONString(repo.findAll(lastName)));
+        log.warning("-----" + JSONArray.toJSONString(repo.findAll(lastName)));
 
         BooleanExpression createTime = user.createTime.after(dateFormat.parse("2018-03-07 15:00:00"));
-        System.out.println("-----" + JSONArray.toJSONString(repo.findAll(lastName.and(createTime))));
+        log.warning("-----" + JSONArray.toJSONString(repo.findAll(createTime)));
+
+        log.warning("-----" + JSONArray.toJSONString(repo.findAll(lastName.and(createTime))));
+
+        createTime = null;
+        log.warning("-----" + JSONArray.toJSONString(repo.findAll(lastName.and(createTime))));
     }
 }
