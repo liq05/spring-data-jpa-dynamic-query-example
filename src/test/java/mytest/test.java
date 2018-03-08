@@ -1,6 +1,7 @@
 package mytest;
 
 import com.alibaba.fastjson.JSONArray;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.java.Log;
 import org.junit.Before;
@@ -63,12 +64,16 @@ public class test {
         BooleanExpression lastName = user.lastName.eq("King");
         log.warning("-----" + JSONArray.toJSONString(repo.findAll(lastName)));
 
-        BooleanExpression createTime = user.createTime.after(dateFormat.parse("2018-03-07 15:00:00"));
+        BooleanExpression createTime = user.createTime.between(dateFormat.parse("2018-03-07 15:00:00"), dateFormat.parse("2018-03-07 19:00:00"));
         log.warning("-----" + JSONArray.toJSONString(repo.findAll(createTime)));
 
         log.warning("-----" + JSONArray.toJSONString(repo.findAll(lastName.and(createTime))));
 
-        createTime = null;
-        log.warning("-----" + JSONArray.toJSONString(repo.findAll(lastName.and(createTime))));
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression testA = user.lastName.eq("King");
+        BooleanExpression testB = null;
+        BooleanExpression testC = null;
+        builder.orAllOf(testA, testB, testC, createTime);
+        log.warning("-----" + JSONArray.toJSONString(repo.findAll(builder)));
     }
 }
