@@ -9,6 +9,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.querydsl.QSort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,5 +78,12 @@ public class test {
         BooleanExpression testC = null;
         builder.orAllOf(testA, testB, testC, createTime);
         log.warning("-----" + JSONArray.toJSONString(repo.findAll(builder)));
+
+        Page<User> all = repo.findAll(builder, PageRequest.of(0, 1, new QSort(user.age.asc())));
+        log.warning("-----" + JSONArray.toJSONString(all.getTotalElements()));
+        log.warning("-----" + JSONArray.toJSONString(all.getTotalPages()));
+        log.warning("-----" + JSONArray.toJSONString(all.getNumber()));
+        log.warning("-----" + JSONArray.toJSONString(all.getNumberOfElements()));
+        log.warning("-----" + JSONArray.toJSONString(all.getContent()));
     }
 }
