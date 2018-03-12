@@ -39,6 +39,7 @@ public class test {
         userJohn.setEmail("john@king.com");
         userJohn.setAge(21);
         userJohn.setCreateTime(dateFormat.parse("2018-03-07 15:00:00"));
+        userJohn.setUpdateTime(dateFormat.parse("2018-03-07 15:00:00"));
         repo.save(userJohn);
 
         User userTom = new User();
@@ -47,6 +48,7 @@ public class test {
         userTom.setEmail("tom@king.com");
         userTom.setAge(22);
         userTom.setCreateTime(dateFormat.parse("2018-03-07 16:00:00"));
+        userTom.setUpdateTime(dateFormat.parse("2018-03-07 15:00:00"));
         repo.save(userTom);
 
         User userJone = new User();
@@ -55,6 +57,7 @@ public class test {
         userJone.setEmail("Jone@lee.com");
         userJone.setAge(23);
         userJone.setCreateTime(dateFormat.parse("2018-03-07 17:00:00"));
+        userJone.setUpdateTime(dateFormat.parse("2018-03-07 15:00:00"));
         repo.save(userJone);
     }
 
@@ -85,5 +88,12 @@ public class test {
         log.warning("-----" + JSONArray.toJSONString(all.getNumber()));
         log.warning("-----" + JSONArray.toJSONString(all.getNumberOfElements()));
         log.warning("-----" + JSONArray.toJSONString(all.getContent()));
+
+        log.warning("-----" + JSONArray.toJSONString(repo.findAll(getExpress(user._super))));
+    }
+
+    private BooleanExpression getExpress(QBaseDateTime qBaseDateTime) throws ParseException {
+        BooleanExpression booleanExpression =  qBaseDateTime.createTime.between(dateFormat.parse("2018-03-07 15:00:00"), dateFormat.parse("2018-03-07 19:00:00"));
+        return booleanExpression;
     }
 }
