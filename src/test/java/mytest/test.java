@@ -89,11 +89,16 @@ public class test {
         log.warning("-----" + JSONArray.toJSONString(all.getNumberOfElements()));
         log.warning("-----" + JSONArray.toJSONString(all.getContent()));
 
-        log.warning("-----" + JSONArray.toJSONString(repo.findAll(getExpress(user._super))));
+        BooleanBuilder tBuilder = new BooleanBuilder();
+
+        tBuilder.orAllOf(getExpress(user._super),testA);
+
+        log.warning("-----" + JSONArray.toJSONString(repo.findAll(tBuilder)));
     }
 
-    private BooleanExpression getExpress(QBaseDateTime qBaseDateTime) throws ParseException {
-        BooleanExpression booleanExpression =  qBaseDateTime.createTime.between(dateFormat.parse("2018-03-07 15:00:00"), dateFormat.parse("2018-03-07 19:00:00"));
-        return booleanExpression;
+    private BooleanBuilder getExpress(QBaseDateTime qBaseDateTime) throws ParseException {
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        booleanBuilder.orAllOf(qBaseDateTime.createTime.between(dateFormat.parse("2018-03-07 15:00:00"), dateFormat.parse("2018-03-07 19:00:00")));
+        return booleanBuilder;
     }
 }
